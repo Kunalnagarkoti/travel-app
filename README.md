@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ✈️ WanderLust Travel App — CI/CD with Jenkins + Docker
 
 A Flask travel website fully containerized and automated with Jenkins CI/CD.
@@ -125,3 +126,6 @@ The `Dockerfile` uses a **multi-stage build**:
 | `/` | GET | Travel website homepage |
 | `/health` | GET | Health check (used by Docker + Jenkins) |
 | `/api/destinations` | GET | JSON list of destinations |
+=======
+# travel-app
+>>>>>>> 0475a20cae494803c791d03faa30d5015ed1fecf

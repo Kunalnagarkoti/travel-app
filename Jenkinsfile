@@ -12,7 +12,7 @@ pipeline {
     environment {
         IMAGE_NAME    = "wanderlust-travel"          // Docker image name
         IMAGE_TAG     = "${BUILD_NUMBER}"            // Tag = Jenkins build number (e.g. "42")
-        DOCKER_HUB_USER = "your-dockerhub-username" // ← CHANGE THIS
+        DOCKER_HUB_USER = "kunalnagarkoti" // ← CHANGE THIS
         CONTAINER_NAME  = "wanderlust-app"
         APP_PORT        = "5000"
         HOST_PORT       = "80"
