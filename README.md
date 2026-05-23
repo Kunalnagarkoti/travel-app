@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # ✈️ WanderLust Travel App — CI/CD with Jenkins + Docker
 
 A Flask travel website fully containerized and automated with Jenkins CI/CD.
