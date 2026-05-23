@@ -127,5 +127,4 @@ The `Dockerfile` uses a **multi-stage build**:
 | `/health` | GET | Health check (used by Docker + Jenkins) |
 | `/api/destinations` | GET | JSON list of destinations |
 =======
-# travel-app
->>>>>>> 0475a20cae494803c791d03faa30d5015ed1fecf
+
