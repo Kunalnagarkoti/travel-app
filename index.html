@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WanderLust — Discover the World</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --sand: #f5efe6;
+            --clay: #c4956a;
+            --deep: #1a1410;
+            --bark: #6b4c32;
+            --mist: #e8ddd0;
+            --ink: #2c2018;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--sand);
+            color: var(--ink);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            overflow-x: hidden;
+        }
+
+        /* NAV */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 100;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.5rem 4rem;
+            background: rgba(245,239,230,0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(196,149,106,0.2);
+        }
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: var(--bark);
+        }
+        .logo span { color: var(--clay); font-style: italic; }
+        nav ul { display: flex; gap: 2.5rem; list-style: none; }
+        nav a {
+            text-decoration: none; color: var(--ink); font-size: 0.85rem;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            opacity: 0.7; transition: opacity 0.3s;
+        }
+        nav a:hover { opacity: 1; color: var(--clay); }
+        .nav-cta {
+            background: var(--clay); color: white !important;
+            padding: 0.6rem 1.4rem; border-radius: 2px;
+            opacity: 1 !important; transition: background 0.3s !important;
+        }
+        .nav-cta:hover { background: var(--bark) !important; }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: flex-start;
+            padding: 8rem 4rem 4rem;
+            position: relative;
+            background:
+                radial-gradient(ellipse at 80% 20%, rgba(196,149,106,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 10% 80%, rgba(107,76,50,0.1) 0%, transparent 50%),
+                var(--sand);
+        }
+        .hero::after {
+            content: '';
+            position: absolute; right: 0; top: 0;
+            width: 45%; height: 100%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 800'%3E%3Cellipse cx='300' cy='400' rx='280' ry='380' fill='%23c4956a' opacity='0.08'/%3E%3Cellipse cx='320' cy='380' rx='220' ry='300' fill='%236b4c32' opacity='0.06'/%3E%3C/svg%3E") center/cover no-repeat;
+        }
+        .hero-tag {
+            font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+            color: var(--clay); margin-bottom: 1.5rem;
+            display: flex; align-items: center; gap: 0.8rem;
+        }
+        .hero-tag::before {
+            content: ''; width: 2rem; height: 1px; background: var(--clay);
+        }
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(3.5rem, 7vw, 7rem);
+            font-weight: 300;
+            line-height: 1.05;
+            color: var(--deep);
+            max-width: 700px;
+            margin-bottom: 2rem;
+        }
+        .hero h1 em {
+            font-style: italic; color: var(--clay);
+        }
+        .hero p {
+            max-width: 460px; line-height: 1.8;
+            color: var(--bark); opacity: 0.8;
+            font-size: 1rem; margin-bottom: 3rem;
+        }
+        .hero-btns { display: flex; gap: 1rem; align-items: center; }
+        .btn-primary {
+            background: var(--deep); color: var(--sand);
+            padding: 1rem 2.5rem; border: none; cursor: pointer;
+            font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+            letter-spacing: 0.1em; text-transform: uppercase;
+            text-decoration: none;
+            transition: background 0.3s; display: inline-block;
+        }
+        .btn-primary:hover { background: var(--bark); }
+        .btn-ghost {
+            color: var(--ink); text-decoration: none;
+            font-size: 0.85rem; letter-spacing: 0.08em;
+            text-transform: uppercase; opacity: 0.6;
+            transition: opacity 0.3s;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        .btn-ghost:hover { opacity: 1; }
+
+        .hero-stats {
+            position: absolute; bottom: 3rem; right: 4rem;
+            display: flex; gap: 3rem; z-index: 1;
+        }
+        .stat { text-align: center; }
+        .stat-num {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem; font-weight: 600; color: var(--clay);
+            display: block; line-height: 1;
+        }
+        .stat-label {
+            font-size: 0.7rem; letter-spacing: 0.15em;
+            text-transform: uppercase; color: var(--bark); opacity: 0.7;
+        }
+
+        /* MARQUEE */
+        .marquee-wrap {
+            background: var(--deep); overflow: hidden;
+            padding: 1rem 0; white-space: nowrap;
+        }
+        .marquee {
+            display: inline-block;
+            animation: marquee 25s linear infinite;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem; font-style: italic;
+            color: var(--clay); letter-spacing: 0.1em;
+        }
+        @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+        /* DESTINATIONS */
+        .destinations {
+            padding: 6rem 4rem;
+        }
+        .section-header {
+            display: flex; justify-content: space-between;
+            align-items: flex-end; margin-bottom: 3rem;
+        }
+        .section-tag {
+            font-size: 0.7rem; letter-spacing: 0.2em;
+            text-transform: uppercase; color: var(--clay);
+            margin-bottom: 0.5rem;
+        }
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem; font-weight: 300;
+            color: var(--deep); line-height: 1.1;
+        }
+        .section-title em { font-style: italic; color: var(--clay); }
+        .view-all {
+            color: var(--bark); text-decoration: none;
+            font-size: 0.8rem; letter-spacing: 0.1em;
+            text-transform: uppercase; opacity: 0.7;
+            transition: opacity 0.3s; white-space: nowrap;
+        }
+        .view-all:hover { opacity: 1; }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        .card {
+            background: white;
+            border: 1px solid var(--mist);
+            transition: transform 0.4s, box-shadow 0.4s;
+            cursor: pointer; overflow: hidden;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(26,20,16,0.12);
+        }
+        .card-visual {
+            height: 180px;
+            background: var(--mist);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 4rem;
+            position: relative; overflow: hidden;
+        }
+        .card-visual::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(135deg, transparent 60%, rgba(196,149,106,0.2));
+        }
+        .card-tag {
+            position: absolute; top: 1rem; right: 1rem;
+            background: var(--clay); color: white;
+            font-size: 0.65rem; letter-spacing: 0.1em;
+            text-transform: uppercase; padding: 0.3rem 0.7rem;
+        }
+        .card-body { padding: 1.5rem; }
+        .card-location {
+            font-size: 0.7rem; letter-spacing: 0.15em;
+            text-transform: uppercase; color: var(--clay);
+            margin-bottom: 0.4rem;
+        }
+        .card-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem; font-weight: 400;
+            color: var(--deep); margin-bottom: 0.6rem;
+        }
+        .card-desc {
+            font-size: 0.85rem; line-height: 1.7;
+            color: var(--bark); opacity: 0.75;
+            margin-bottom: 1.2rem;
+        }
+        .card-footer {
+            display: flex; justify-content: space-between;
+            align-items: center; padding-top: 1rem;
+            border-top: 1px solid var(--mist);
+        }
+        .card-price {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem; color: var(--clay); font-weight: 600;
+        }
+        .card-price span { font-size: 0.75rem; color: var(--bark); font-family: 'DM Sans', sans-serif; font-weight: 300; }
+        .card-dur {
+            font-size: 0.75rem; color: var(--bark);
+            opacity: 0.7; letter-spacing: 0.05em;
+        }
+
+        /* CTA BANNER */
+        .cta-banner {
+            margin: 2rem 4rem 6rem;
+            background: var(--deep);
+            padding: 5rem;
+            display: flex; justify-content: space-between; align-items: center;
+            position: relative; overflow: hidden;
+        }
+        .cta-banner::before {
+            content: '✈';
+            position: absolute; right: 8rem; top: 50%;
+            transform: translateY(-50%) rotate(-30deg);
+            font-size: 8rem; opacity: 0.04; color: white;
+        }
+        .cta-text h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8rem; font-weight: 300;
+            color: white; margin-bottom: 0.8rem;
+        }
+        .cta-text h2 em { font-style: italic; color: var(--clay); }
+        .cta-text p { color: rgba(255,255,255,0.5); font-size: 0.95rem; }
+        .btn-light {
+            background: var(--clay); color: white;
+            padding: 1rem 2.5rem; text-decoration: none;
+            font-size: 0.85rem; letter-spacing: 0.1em;
+            text-transform: uppercase; white-space: nowrap;
+            transition: background 0.3s; display: inline-block;
+        }
+        .btn-light:hover { background: var(--bark); }
+
+        /* FOOTER */
+        footer {
+            background: var(--ink); color: rgba(255,255,255,0.4);
+            padding: 3rem 4rem;
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.8rem; letter-spacing: 0.05em;
+        }
+        .footer-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem; color: var(--clay);
+            font-style: italic;
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hero-tag { animation: fadeUp 0.8s ease 0.1s both; }
+        .hero h1 { animation: fadeUp 0.8s ease 0.2s both; }
+        .hero p { animation: fadeUp 0.8s ease 0.35s both; }
+        .hero-btns { animation: fadeUp 0.8s ease 0.5s both; }
+
+        @media (max-width: 900px) {
+            nav { padding: 1.2rem 2rem; }
+            nav ul { display: none; }
+            .hero, .destinations { padding: 6rem 2rem 3rem; }
+            .cards-grid { grid-template-columns: 1fr; }
+            .hero-stats { right: 2rem; gap: 1.5rem; }
+            .cta-banner { flex-direction: column; gap: 2rem; margin: 1rem 2rem 4rem; padding: 3rem 2rem; }
+            footer { flex-direction: column; gap: 1rem; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">Wander<span>Lust</span></div>
+    <ul>
+        <li><a href="#">Destinations</a></li>
+        <li><a href="#">Experiences</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#" class="nav-cta">Book Now</a></li>
+    </ul>
+</nav>
+
+<section class="hero">
+    <div class="hero-tag">Premium Travel Experiences</div>
+    <h1>Life is short,<br><em>explore</em><br>the world.</h1>
+    <p>Curated journeys to the world's most extraordinary destinations. We craft experiences that transform travelers into storytellers.</p>
+    <div class="hero-btns">
+        <a href="#destinations" class="btn-primary">Explore Destinations</a>
+        <a href="#" class="btn-ghost">Watch Story ↗</a>
+    </div>
+    <div class="hero-stats">
+        <div class="stat">
+            <span class="stat-num">120+</span>
+            <span class="stat-label">Destinations</span>
+        </div>
+        <div class="stat">
+            <span class="stat-num">8k+</span>
+            <span class="stat-label">Happy Travelers</span>
+        </div>
+        <div class="stat">
+            <span class="stat-num">15yr</span>
+            <span class="stat-label">Experience</span>
+        </div>
+    </div>
+</section>
+
+<div class="marquee-wrap">
+    <div class="marquee">
+        &nbsp; Santorini &nbsp;·&nbsp; Kyoto &nbsp;·&nbsp; Patagonia &nbsp;·&nbsp; Maldives &nbsp;·&nbsp; Marrakech &nbsp;·&nbsp; Banff &nbsp;·&nbsp; Amalfi Coast &nbsp;·&nbsp; Bali &nbsp;·&nbsp; Iceland &nbsp;·&nbsp; New Zealand &nbsp;·&nbsp; Santorini &nbsp;·&nbsp; Kyoto &nbsp;·&nbsp; Patagonia &nbsp;·&nbsp; Maldives &nbsp;·&nbsp; Marrakech &nbsp;·&nbsp; Banff &nbsp;·&nbsp; Amalfi Coast &nbsp;·&nbsp; Bali &nbsp;·&nbsp; Iceland &nbsp;·&nbsp; New Zealand &nbsp;·&nbsp;
+    </div>
+</div>
+
+<section class="destinations" id="destinations">
+    <div class="section-header">
+        <div>
+            <div class="section-tag">Featured Journeys</div>
+            <h2 class="section-title">Where will you go <em>next?</em></h2>
+        </div>
+        <a href="#" class="view-all">View All →</a>
+    </div>
+    <div class="cards-grid">
+        {% for dest in destinations %}
+        <div class="card">
+            <div class="card-visual">
+                {{ dest.emoji }}
+                <span class="card-tag">{{ dest.tag }}</span>
+            </div>
+            <div class="card-body">
+                <div class="card-location">{{ dest.country }}</div>
+                <div class="card-name">{{ dest.name }}</div>
+                <p class="card-desc">{{ dest.description }}</p>
+                <div class="card-footer">
+                    <div class="card-price">{{ dest.price }} <span>/ person</span></div>
+                    <div class="card-dur">⏱ {{ dest.duration }}</div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<div class="cta-banner">
+    <div class="cta-text">
+        <h2>Ready to start your<br><em>next adventure?</em></h2>
+        <p>Talk to our travel experts and get a personalized itinerary.</p>
+    </div>
+    <a href="#" class="btn-light">Plan My Trip →</a>
+</div>
+
+<footer>
+    <div class="footer-logo">WanderLust</div>
+    <div>© 2024 WanderLust Travel. All rights reserved.</div>
+    <div>Built with Flask · Containerized · CI/CD Ready</div>
+</footer>
+
+</body>
+</html>
