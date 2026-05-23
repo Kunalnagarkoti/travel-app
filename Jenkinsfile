@@ -45,33 +45,37 @@ pipeline {
             }
         }
 
-        // ── STAGE 2: Install & Test ──────────────────────────
-        stage('Test') {
-            steps {
-                echo '🧪 Installing dependencies and running tests...'
-                sh '''
-                    # Create isolated virtual environment
-                    python3 -m venv venv
-                    . venv/bin/activate
+   // ── STAGE 2: Install & Test ──────────────────────────
+stage('Test') {
+    steps {
+        echo '🧪 Installing dependencies and running tests...'
+        sh '''
+            # Create isolated virtual environment
+            python3 -m venv venv
+            . venv/bin/activate
 
-                    # Install dependencies
-                    pip install --upgrade pip
-                    pip install -r requirements.txt
+            # Install dependencies
+            pip install --upgrade pip
+            pip install -r requirements.txt
 
-                    # Run pytest with verbose output and generate XML report
-                    pytest tests/ -v --tb=short --junit-xml=test-results.xml
-                '''
-            }
-            post {
-                always {
-                    // Publish test results in Jenkins UI
-                    junit 'test-results.xml'
-                    // Clean up venv
-                    sh 'rm -rf venv'
-                }
-            }
+            # Install pytest plugins explicitly
+            pip install pytest pytest-flask
+
+            # Run all tests automatically
+            pytest -v --tb=short --junit-xml=test-results.xml
+        '''
+    }
+
+    post {
+        always {
+            // Publish test results in Jenkins UI
+            junit allowEmptyResults: true, testResults: 'test-results.xml'
+
+            // Cleanup virtual environment
+            sh 'rm -rf venv'
         }
-
+    }
+}
         // ── STAGE 3: Build Docker Image ──────────────────────
         stage('Build Docker Image') {
             steps {
