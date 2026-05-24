@@ -126,5 +126,4 @@ The `Dockerfile` uses a **multi-stage build**:
 | `/` | GET | Travel website homepage |
 | `/health` | GET | Health check (used by Docker + Jenkins) |
 | `/api/destinations` | GET | JSON list of destinations |
-=======
 
